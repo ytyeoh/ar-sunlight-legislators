@@ -1,14 +1,34 @@
 require 'csv'
-
+require 'byebug'
 class SunlightLegislatorsImporter
+
+  # def initialize
+  #   @filename = legislators.csv
+  # end
+
   def self.import(filename)
+    x=[]
     csv = CSV.new(File.open(filename), :headers => true)
     csv.each do |row|
       row.each do |field, value|
+        if field == 'firstname'
+          field = 'first_name'
+        elsif field == 'lastname'
+          field = 'last_name'
+        elsif field == 'webform'
+          field = 'email'
+        elsif field == 'birthdate'
+          field = 'birthday'
+        end
+        x << [field, value]
         # TODO: begin
-        raise NotImplementedError, "TODO: figure out what to do with this row and do it!"
+        #raise NotImplementedError,
+        # "TODO: figure out what to do with this row and do it!"
+        # row.save
         # TODO: end
       end
+      Legislator.create(Hash[x])#first_name: name,
+
     end
   end
 end
